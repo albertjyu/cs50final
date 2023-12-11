@@ -8,7 +8,6 @@ preparePage();
 async function preparePage() {
   // Call the prepareQuoteBox function and assign its output to an array called words
   let currentWord = 0;
-  currentWord = 0;
   let checkWords = {};
   let words = await populateQuoteBox(currentWord, checkWords);
 
@@ -23,14 +22,10 @@ async function preparePage() {
       key.preventDefault();
 
       // If the user typed the word correctly with no mispelling and case-sensitive
-      console.log(inputfield.value);
-      console.log(words[currentWord])
       if (inputfield.value == words[currentWord]) {
         checkWords[words[currentWord]] = true;
-        console.log('success')
       } else {
         checkWords[words[currentWord]] = false;
-        console.log('fail')
       }
 
       // reset the input text box to blank
