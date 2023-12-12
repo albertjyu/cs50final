@@ -81,14 +81,14 @@ async function fetchRandomWords() {
 
 function timer(){
   var countDate = new Date().getTime();
-
   var x = setInterval(function(){
     var now = new Date().getTime();
-    var difference = countDate - now;
+    var differenceMS = countDate - now;
+    let differenceSec = differenceMS / 1000;
     
     const timer = document.getElementById("timer");
 
-    timer.innerHTML = difference
+    timer.innerHTML = differenceSec;
   })
 }
 
