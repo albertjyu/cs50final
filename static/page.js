@@ -42,9 +42,10 @@ async function populateQuoteBox(currentWord, checkWords) {
   quotebox.innerHTML = "";
 
   // Fill the word box with the random words
-  words.forEach((word, index)=>{
+  words.forEach((word, index) => {
     const span = document.createElement("span");
     span.textContent = word + " ";
+    span.style.paddingLeft = '10px';
 
     if (index == currentWord) {
       span.style.backgroundColor = "lightblue";
@@ -54,7 +55,7 @@ async function populateQuoteBox(currentWord, checkWords) {
       span.style.backgroundColor = "pink";
     }
     quotebox.appendChild(span);
-  })
+  });
 
   return words;
 }
