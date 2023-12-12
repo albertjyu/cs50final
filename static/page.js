@@ -79,17 +79,18 @@ async function fetchRandomWords() {
   return Object.keys(wordsObject);
 }
 
-function timer(){
-  var countDate = new Date().getTime();
+function countdownTimer(){
+  var countDate = new Date().getTime() + 6000;
   var x = setInterval(function(){
     var now = new Date().getTime();
     var differenceMS = countDate - now;
     let differenceSec = differenceMS / 1000;
     
     const timer = document.getElementById("timer");
-
-    timer.innerHTML = differenceSec;
+    if (differenceSec > 0){
+      timer.innerHTML = "Time:" + differenceSec.toFixed(2);
+    } else timer.innerHTML = "Time:" + '0.00';
   })
 }
 
-timer();
+countdownTimer();
