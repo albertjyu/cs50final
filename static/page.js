@@ -92,5 +92,5 @@ function countdownTimer(){
     } else timer.innerHTML = "Time:" + '0.00';
   })
 }
-
+// Start countdown
 countdownTimer();
