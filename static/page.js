@@ -38,7 +38,7 @@ async function preparePage() {
 
 async function populateQuoteBox(currentWord, checkWords) {
   // Call the fetchRandomWords function and assign its output (list) to a constant named words
-  const words = await fetchRandomWords();
+  const words = await createWordList();
   quotebox.innerHTML = "";
 
   // Fill the word box with the random words
@@ -94,3 +94,21 @@ function countdownTimer(){
 }
 // Start countdown
 countdownTimer();
+
+
+
+
+async function createWordList(){
+  const response = await fetch('/static/wordlist.csv');
+  const data = await response.text();
+  
+  let wordlist = data.split('\n');
+  console.log(wordlist);
+
+  let word_3 = wordlist.filter((word)=>word.length==3)
+  console.log(word_3);
+
+  return word_3;
+
+}
+createWordList();
