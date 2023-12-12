@@ -78,3 +78,18 @@ async function fetchRandomWords() {
   // return just the keys as a list
   return Object.keys(wordsObject);
 }
+
+function timer(){
+  var countDate = new Date().getTime();
+
+  var x = setInterval(function(){
+    var now = new Date().getTime();
+    var difference = countDate - now;
+    
+    const timer = document.getElementById("timer");
+
+    timer.innerHTML = difference
+  })
+}
+
+timer();
