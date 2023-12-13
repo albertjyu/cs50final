@@ -45,7 +45,7 @@ async function populateQuoteBox(currentWord, checkWords) {
   words.forEach((word, index) => {
     const span = document.createElement("span");
     span.textContent = word + " ";
-    span.style.paddingLeft = '10px';
+    span.style.paddingLeft = "10px";
 
     if (index == currentWord) {
       span.style.backgroundColor = "lightblue";
@@ -79,36 +79,32 @@ async function fetchRandomWords() {
   return Object.keys(wordsObject);
 }
 
-function countdownTimer(){
+function countdownTimer() {
   var countDate = new Date().getTime() + 6000;
-  var x = setInterval(function(){
+  var x = setInterval(function () {
     var now = new Date().getTime();
     var differenceMS = countDate - now;
     let differenceSec = differenceMS / 1000;
-    
+
     const timer = document.getElementById("timer");
-    if (differenceSec > 0){
+    if (differenceSec > 0) {
       timer.innerHTML = "Time:" + differenceSec.toFixed(2);
-    } else timer.innerHTML = "Time:" + '0.00';
-  })
+    } else timer.innerHTML = "Time:" + "0.00";
+  });
 }
 // Start countdown
 countdownTimer();
 
-
-
-
-async function createWordList(){
-  const response = await fetch('/static/wordlist.csv');
+async function createWordList() {
+  const response = await fetch("/static/wordlist.csv");
   const data = await response.text();
-  
-  let wordlist = data.split('\n');
+
+  let wordlist = data.split("\n");
   console.log(wordlist);
 
-  let word_3 = wordlist.filter((word)=>word.length==3)
+  let word_3 = wordlist.filter((word) => word.length <= 7);
   console.log(word_3);
 
-  return word_3;
-
+  return word_3.slice(0, 50);
 }
 createWordList();
