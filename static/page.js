@@ -3,10 +3,13 @@ const inputfield = document.getElementById("inputfield");
 const quotebox = document.getElementById("quotebox");
 const resetButton = document.getElementById("resetButton");
 
+// When page loads, prepare the page for a typing test
 prepareTest();
 
 async function prepareTest() {
-  // Setup variables for the typing test
+  inputfield.value = "";
+  
+  // Initialize variables for the typing test
   let currentWord = 0;
   let checkWords = {};
   let testIsInProgress = false;
@@ -30,11 +33,9 @@ async function prepareTest() {
     if (keyIsAlphanumeric && !testIsInProgress) {
       // If the key is a number or letter and the test hasn't started yet, start the test
       console.log("alphanumeric");
-      testIsInProgress = true;
       startTest();
     } else if (keyIsSpace && !testIsInProgress) {
       key.preventDefault();
-      testIsInProgress = true;
       startTest();
       // If the user typed the word correctly with no mispelling and case-sensitive
       if (inputfield.value == words[currentWord]) {
@@ -65,6 +66,7 @@ async function prepareTest() {
     }
 
     function startTest() {
+      testIsInProgress = true;
       console.log("test start");
     }
   }
