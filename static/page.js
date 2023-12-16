@@ -3,42 +3,51 @@ const inputfield = document.getElementById("inputfield");
 const quotebox = document.getElementById("quotebox");
 const resetButton = document.getElementById("resetButton");
 
-// Create an event listener to listen for when the user first begins to type, that triggers the start of the typing test.
-inputfield.addEventListener("keydown", handleFirstKeypress);
+prepareTest();
 
-// Begin the typing test on the first keydown event in the input field.
-function handleFirstKeypress(key) {
-  let keyCode = key.keyCode;
-  let code = key.code;
-  const keyIsAlphanumericOrSpace =
-    (keyCode >= 48 && keyCode <= 57) ||
-    (keyCode >= 65 && keyCode <= 90) ||
-    code == "Space";
-  if (keyIsAlphanumericOrSpace) {
-    startTest();
-    inputfield.removeEventListener("keydown", handleFirstKeypress);
-  } else return false;
-}
-
-function startTest() {
-  console.log("test start");
-}
-
-preparePage();
-
-async function preparePage() {
-  // Call the prepareQuoteBox function and assign its output to an array called words
+async function prepareTest() {
+  // Setup variables for the typing test
   let currentWord = 0;
   let checkWords = {};
+  let testIsInProgress = false;
+
+  // Call the prepareQuoteBox function and assign its output to an array called words
   let words = await populateQuoteBox(currentWord, checkWords);
 
-  // Add an event listener to listen for when the first word is typed, then start the test and timer
-  inputfield.addEventListener("keydown", (key) => {
+  // Add an event listener to handle keypresses
+  inputfield.addEventListener("keydown", handleKeyPress);
+
+  function handleKeyPress(key) {
     // Find which key is being pressed
     let code = key.code;
+    let keyCode = key.keyCode;
 
-    // If the key is space (i.e. the user completes the current word being typed) then:
-    if (code === "Space") {
+    // Bool testing whether the key pressed is alphanumeric
+    const keyIsAlphanumeric =
+      (keyCode >= 48 && keyCode <= 57) || (keyCode >= 65 && keyCode <= 90);
+    const keyIsSpace = code === "Space";
+
+    if (keyIsAlphanumeric && !testIsInProgress) {
+      // If the key is a number or letter and the test hasn't started yet, start the test
+      console.log("alphanumeric");
+      testIsInProgress = true;
+      startTest();
+    } else if (keyIsSpace && !testIsInProgress) {
+      key.preventDefault();
+      testIsInProgress = true;
+      startTest();
+      // If the user typed the word correctly with no mispelling and case-sensitive
+      if (inputfield.value == words[currentWord]) {
+        checkWords[words[currentWord]] = true;
+      } else {
+        checkWords[words[currentWord]] = false;
+      }
+      // reset the input text box to blank
+      inputfield.value = "";
+      currentWord++;
+      populateQuoteBox(currentWord, checkWords);
+    } else if (code === "Space" && testIsInProgress) {
+      // If the key is space (i.e. the user completes the current word being typed) then:
       // Prevent the space from being typed into the box
       key.preventDefault();
 
@@ -54,11 +63,14 @@ async function preparePage() {
       currentWord++;
       populateQuoteBox(currentWord, checkWords);
     }
-  });
-}
 
+    function startTest() {
+      console.log("test start");
+    }
+  }
+}
 async function populateQuoteBox(currentWord, checkWords) {
-  // Call the fetchRandomWords function and assign its output (list) to a constant named words
+  // Call the createWordList function and assign its output (list) to a constant named words
   const words = await createWordList();
   quotebox.innerHTML = "";
 
@@ -102,11 +114,13 @@ async function createWordList() {
   const data = await response.text();
 
   let wordlist = data.split("\n");
-  console.log(wordlist);
 
   let word_3 = wordlist.filter((word) => word.length <= 7);
-  console.log(word_3);
 
   return word_3.slice(0, 50);
 }
 createWordList();
+
+// // Begin the typing test on the first keydown event in the input field.
+// function handleFirstKeypress(key) {
+//
