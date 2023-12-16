@@ -66,7 +66,11 @@ async function prepareTest() {
     }
 
     function startTest() {
+      // Set test in progress
       testIsInProgress = true;
+      
+      // Start countdown
+      countdownTimer();
       console.log("test start");
     }
   }
@@ -96,7 +100,7 @@ async function populateQuoteBox(currentWord, checkWords) {
 }
 
 function countdownTimer() {
-  var countDate = new Date().getTime() + 6000;
+  var countDate = new Date().getTime() + 60000;
   var x = setInterval(function () {
     var now = new Date().getTime();
     var differenceMS = countDate - now;
@@ -108,8 +112,7 @@ function countdownTimer() {
     } else timer.innerHTML = "Time:" + "0.00";
   });
 }
-// Start countdown
-countdownTimer();
+
 
 async function createWordList() {
   const response = await fetch("/static/wordlist.csv");

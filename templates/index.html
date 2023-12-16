@@ -1,58 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Typing Speed Test</title>
-    <link rel="stylesheet" href="../static/styles.css">
+    <link rel="stylesheet" href="../static/styles.css" />
     <script src="../static/page.js" defer></script>
-    </head>
-<body>
-   <div id="container">
-       <div>
-            <h1>Typing Speed Test</h1>
-        </div>
-        
-        <div style="border:solid">
-            <div id="quotebox" style="text-align: center; width:auto;">Quote Text Box<br><br></div>
-        </div>
+  </head>
+  <body>
+    <div id="container">
+      <div>
+        <h1>Typing Speed Test</h1>
+      </div>
 
+      <div style="border: solid">
+        <div id="quotebox" style="text-align: center; width: auto">
+          Quote Text Box<br /><br />
+        </div>
+      </div>
+
+      <div>
+        <input
+          id="inputfield"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          autofocus
+          placeholder
+        />
+      </div>
+      <div>
+        <button onclick="prepareTest()" id="resetButton">Reset Test</button>
+      </div>
+      <div>
+        <p id="timer">Time:</p>
+      </div>
+      <div style="border: solid">
         <div>
-            <input id="inputfield" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" autofocus placeholder>
+          <p1>Raw WPM:</p1>
         </div>
         <div>
-            <button onclick="prepareTest()" id="resetButton">Reset Test</button>
+          <p1>Avg WPM:</p1>
         </div>
         <div>
-            <p id="timer">Time: </p>
+          <p1>Raw CPM:</p1>
         </div>
-        <div style="border:solid">
-            <div>
-                <p1>Raw WPM:</p1>
-            </div>
-            <div>
-                <p1>Avg WPM:</p1>
-            </div>
-            <div>
-                <p1>Raw CPM:</p1>
-            </div>
-            <div>
-                <p1>Avg CPM:</p1>
-            </div>
+        <div>
+          <p1>Avg CPM:</p1>
         </div>
-        <div style="border:solid">
-            <div><p1>Options:</p1></div>
-            <div>
-                <p1>Difficulty:</p1>
-                <form>
-                    <select>
-                        <option value="easy">Easy</option>
-                        <option value="medium">Medium</option>
-                        <option value="hard">Hard</option>
-                    </select>
-                </form>
-            </div>         
+      </div>
+      <div style="border: solid">
+        <div><p1>Options:</p1></div>
+        <div>
+          <p1>Difficulty:</p1>
+          <select>
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+          </select>
         </div>
-   </div>
-</body>
+        <div>
+          <p1>Time:</p1>
+          <select>
+            <option value="60">60 seconds</option>
+            <option value="30">30 seconds</option>
+            <option value="15">15 seconds</option>
+          </select>
+        </div>
+        <div>
+          <p1>Max Word Length:</p1>
+          <select>
+            <option value="8">8 letters</option>
+            <option value="6">6 letters</option>
+            <option value="4">4 letters</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
