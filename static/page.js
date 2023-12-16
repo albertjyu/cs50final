@@ -77,7 +77,7 @@ async function prepareTest() {
 }
 async function populateQuoteBox(currentWord, checkWords) {
   // Call the createWordList function and assign its output (list) to a constant named words
-  const words = await createWordList();
+  const words = await createRandomWordList();
   quotebox.innerHTML = "";
 
   // Fill the word box with the random words
@@ -114,18 +114,23 @@ function countdownTimer() {
 }
 
 
-async function createWordList() {
+async function createMasterWordList() {
+  // Use fetch to load in the wordlist CSV file
   const response = await fetch("/static/wordlist.csv");
   const data = await response.text();
-
+  
+  // Split the CSV data by newline to create an array of words.
   let wordlist = data.split("\n");
 
-  let word_3 = wordlist.filter((word) => word.length <= 7);
-
-  return word_3.slice(0, 50);
+  // return the masterwordlist (slice the first string since it's the URL source in the CSV)
+  return wordlist.slice(1);
 }
-createWordList();
 
-// // Begin the typing test on the first keydown event in the input field.
-// function handleFirstKeypress(key) {
-//
+async function createRandomWordList(numberOfWords, maxCharacterCount){
+  const masterWordlist = await createMasterWordList();
+  
+  let word_3 = masterWordlist.filter((word) => word.length <= 7);
+  let result = word_3.slice(0, 50);
+
+  return result;
+}
