@@ -3,6 +3,27 @@ const inputfield = document.getElementById("inputfield");
 const quotebox = document.getElementById("quotebox");
 const resetButton = document.getElementById("resetButton");
 
+// Create an event listener to listen for when the user first begins to type, that triggers the start of the typing test.
+inputfield.addEventListener("keydown", handleFirstKeypress);
+
+// Begin the typing test on the first keydown event in the input field.
+function handleFirstKeypress(key) {
+  let keyCode = key.keyCode;
+  let code = key.code;
+  const keyIsAlphanumericOrSpace =
+    (keyCode >= 48 && keyCode <= 57) ||
+    (keyCode >= 65 && keyCode <= 90) ||
+    code == "Space";
+  if (keyIsAlphanumericOrSpace) {
+    startTest();
+    inputfield.removeEventListener("keydown", handleFirstKeypress);
+  } else return false;
+}
+
+function startTest() {
+  console.log("test start");
+}
+
 preparePage();
 
 async function preparePage() {
@@ -58,25 +79,6 @@ async function populateQuoteBox(currentWord, checkWords) {
   });
 
   return words;
-}
-
-async function fetchRandomWords() {
-  const NUMBEROFWORDS = 50;
-  //const apiUrl = "https://random-word-api.herokuapp.com/word?number=30";
-  const apiUrl = "https://api.datamuse.com/words?ml=duck&sp=b*&max=10";
-
-  // Set variables for the async fetch request
-  const response = await fetch(apiUrl);
-  const data = await response.json();
-
-  // Process the response and turn the data into an object
-  const wordsObject = data.reduce((obj, { word }) => {
-    obj[word] = true;
-    return obj;
-  }, {});
-
-  // return just the keys as a list
-  return Object.keys(wordsObject);
 }
 
 function countdownTimer() {
