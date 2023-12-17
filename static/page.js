@@ -22,6 +22,7 @@ async function prepareTest() {
   
   // Empty input text box
   inputfield.value = "";
+  inputfield.focus();
 
   // Remove event listener from the text box (since prepareTest() will add a new event listener, we need to prevent having duplicate event listener)
   resetButton.addEventListener("click", () => inputfield.removeEventListener("keydown", handleKeyPress));
