@@ -2,6 +2,7 @@
 const inputfield = document.getElementById("inputfield");
 const quotebox = document.getElementById("quotebox");
 const resetButton = document.getElementById("resetButton");
+const timer = document.getElementById("timer");
 
 // When page loads, prepare the page for a typing test
 prepareTest();
@@ -33,6 +34,8 @@ async function prepareTest() {
   inputfield.addEventListener("keydown", handleKeyPress);
 
   function handleKeyPress(key) {
+    console.log(timer.value)
+    
     // Find which key is being pressed
     let code = key.code;
     let keyCode = key.keyCode;
@@ -82,8 +85,6 @@ async function prepareTest() {
     }
 
     function startTest() {
-      let correctCharacterCount = 0;
-
       // Set test in progress
       testIsInProgress = true;
 
