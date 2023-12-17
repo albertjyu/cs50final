@@ -96,8 +96,8 @@ async function prepareTest() {
         let timeremaining = document.getElementById("timer").innerHTML;
         let timeelapsed = document.getElementById("time").value - timeremaining
         let rawcpm = correctCharacterCount / timeelapsed * 60;
-        rawcpmtext.innerHTML = rawcpm;
-        rawwpmtext.innerHTML = rawcpm / 5;
+        rawcpmtext.innerHTML = rawcpm.toFixed(2);
+        rawwpmtext.innerHTML = (rawcpm / 5).toFixed(2);
       } else {
         checkWords[wordlist[currentWord]] = false;
       }
