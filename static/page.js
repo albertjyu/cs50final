@@ -31,6 +31,8 @@ async function prepareTest() {
   // Empty input text box
   inputfield.value = "";
   inputfield.focus();
+  rawcpmtext.innerHTML = 0;
+  rawwpmtext.innerHTML = 0;
 
   // Remove event listener from the text box (since prepareTest() will add a new event listener, we need to prevent having duplicate event listener)
   resetButton.addEventListener(
@@ -75,15 +77,15 @@ async function prepareTest() {
       timerId = startTest();
       // If the user typed the word correctly with no mispelling and case-sensitive
       if (inputfield.value == words[currentWord]) {
-        checkWords[words[currentWord]] = true;
+        checkWords[wordlist[currentWord]] = true;
       } else {
-        checkWords[words[currentWord]] = false;
+        checkWords[wordlist[currentWord]] = false;
       }
       // reset the input text box to blank
       inputfield.value = "";
       currentWord++;
       populateQuoteBox(wordlist, currentWord, checkWords);
-    } else if (code === "Space" && testIsInProgress) {
+    } else if (keyIsSpace && testIsInProgress) {
       // If the key is space (i.e. the user completes the current word being typed) then:
       // Prevent the space from being typed into the box
       key.preventDefault();
@@ -194,7 +196,7 @@ async function createRandomWordList(numberOfWords, maxCharacterCount) {
   const masterWordlist = await createMasterWordList();
 
   let wordListFilterByCharCount = masterWordlist.filter(
-    (word) => word.length <= maxCharacterCount
+    (word) => word.length <= maxCharacterCount && word.length > 0
   );
 
   //https://stackoverflow.com/questions/19269545/how-to-get-a-number-of-random-elements-from-an-array
