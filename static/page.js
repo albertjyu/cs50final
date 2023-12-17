@@ -2,27 +2,24 @@
 const inputfield = document.getElementById("inputfield");
 const quotebox = document.getElementById("quotebox");
 const resetButton = document.getElementById("resetButton");
-let currentWord;
-let checkWords;
-let testIsInProgress;
 
 // When page loads, prepare the page for a typing test
 prepareTest();
 
 async function prepareTest() {
-  
   // Empty input text box
   inputfield.value = "";
-  
+
   // Remove event listener from the text box (since prepareTest() will add a new event listener, we need to prevent having duplicate event listener)
   resetButton.addEventListener("click", function () {
     inputfield.removeEventListener("keydown", handleKeyPress);
   });
 
   // Initialize variables for the typing test
-  currentWord = 0;
-  checkWords = {};
-  testIsInProgress = false;
+  let currentWord = 0;
+  let checkWords = {};
+  let testIsInProgress = false;
+  let timerId;
   let wordlist = await createRandomWordList();
 
   // Populate the quote box with the word list
@@ -44,10 +41,10 @@ async function prepareTest() {
     if (keyIsAlphanumeric && !testIsInProgress) {
       // If the key is a number or letter and the test hasn't started yet, start the test
       console.log("alphanumeric");
-      startTest();
+      timerId = startTest();
     } else if (keyIsSpace && !testIsInProgress) {
       key.preventDefault();
-      startTest();
+      timerId = startTest();
       // If the user typed the word correctly with no mispelling and case-sensitive
       if (inputfield.value == words[currentWord]) {
         checkWords[words[currentWord]] = true;
@@ -63,6 +60,10 @@ async function prepareTest() {
       // Prevent the space from being typed into the box
       key.preventDefault();
 
+      if (currentWord == wordlist.length - 1) {
+        stopTest(timerId);
+      }
+
       // If the user typed the word correctly with no mispelling and case-sensitive
       if (inputfield.value == wordlist[currentWord]) {
         checkWords[wordlist[currentWord]] = true;
@@ -77,12 +78,19 @@ async function prepareTest() {
     }
 
     function startTest() {
+      let correctCharacterCount = 0;
+
       // Set test in progress
       testIsInProgress = true;
 
       // Start countdown
-      countdownTimer();
+      let timerId = countdownTimer();
       console.log("test start");
+      return timerId;
+    }
+
+    function stopTest(timerId) {
+      stopTimer(timerId);
     }
   }
 }
@@ -108,18 +116,23 @@ function populateQuoteBox(wordlist, currentWord, checkWords) {
   return wordlist;
 }
 
+function stopTimer(timerId) {
+  clearInterval(timerId);
+}
+
 function countdownTimer() {
   var countDate = new Date().getTime() + 60000;
-  var x = setInterval(function () {
+  var timerId = setInterval(function () {
     var now = new Date().getTime();
     var differenceMS = countDate - now;
     let differenceSec = differenceMS / 1000;
 
     const timer = document.getElementById("timer");
     if (differenceSec > 0) {
-      timer.innerHTML = "Time:" + differenceSec.toFixed(2);
-    } else timer.innerHTML = "Time:" + "0.00";
+      timer.innerHTML = differenceSec.toFixed(2);
+    } else timer.innerHTML = "0.00";
   });
+  return timerId;
 }
 
 async function createMasterWordList() {
@@ -138,7 +151,7 @@ async function createRandomWordList(numberOfWords, maxCharacterCount) {
   const masterWordlist = await createMasterWordList();
 
   let word_3 = masterWordlist.filter((word) => word.length <= 7);
-  let result = word_3.slice(0, 50);
+  let result = word_3.slice(0, 10);
 
   return result;
 }
