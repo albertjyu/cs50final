@@ -2,20 +2,31 @@
 const inputfield = document.getElementById("inputfield");
 const quotebox = document.getElementById("quotebox");
 const resetButton = document.getElementById("resetButton");
+let currentWord;
+let checkWords;
+let testIsInProgress;
 
 // When page loads, prepare the page for a typing test
 prepareTest();
 
 async function prepareTest() {
+  
+  // Empty input text box
   inputfield.value = "";
   
-  // Initialize variables for the typing test
-  let currentWord = 0;
-  let checkWords = {};
-  let testIsInProgress = false;
+  // Remove event listener from the text box (since prepareTest() will add a new event listener, we need to prevent having duplicate event listener)
+  resetButton.addEventListener("click", function () {
+    inputfield.removeEventListener("keydown", handleKeyPress);
+  });
 
-  // Call the prepareQuoteBox function and assign its output to an array called words
-  let words = await populateQuoteBox(currentWord, checkWords);
+  // Initialize variables for the typing test
+  currentWord = 0;
+  checkWords = {};
+  testIsInProgress = false;
+  let wordlist = await createRandomWordList();
+
+  // Populate the quote box with the word list
+  populateQuoteBox(wordlist, currentWord, checkWords);
 
   // Add an event listener to handle keypresses
   inputfield.addEventListener("keydown", handleKeyPress);
@@ -46,46 +57,44 @@ async function prepareTest() {
       // reset the input text box to blank
       inputfield.value = "";
       currentWord++;
-      populateQuoteBox(currentWord, checkWords);
+      populateQuoteBox(wordlist, currentWord, checkWords);
     } else if (code === "Space" && testIsInProgress) {
       // If the key is space (i.e. the user completes the current word being typed) then:
       // Prevent the space from being typed into the box
       key.preventDefault();
 
       // If the user typed the word correctly with no mispelling and case-sensitive
-      if (inputfield.value == words[currentWord]) {
-        checkWords[words[currentWord]] = true;
+      if (inputfield.value == wordlist[currentWord]) {
+        checkWords[wordlist[currentWord]] = true;
       } else {
-        checkWords[words[currentWord]] = false;
+        checkWords[wordlist[currentWord]] = false;
       }
 
       // reset the input text box to blank
       inputfield.value = "";
       currentWord++;
-      populateQuoteBox(currentWord, checkWords);
+      populateQuoteBox(wordlist, currentWord, checkWords);
     }
 
     function startTest() {
       // Set test in progress
       testIsInProgress = true;
-      
+
       // Start countdown
       countdownTimer();
       console.log("test start");
     }
   }
 }
-async function populateQuoteBox(currentWord, checkWords) {
-  // Call the createWordList function and assign its output (list) to a constant named words
-  const words = await createRandomWordList();
-  quotebox.innerHTML = "";
 
+function populateQuoteBox(wordlist, currentWord, checkWords) {
+  quotebox.innerHTML = "";
+  console.log(checkWords);
   // Fill the word box with the random words
-  words.forEach((word, index) => {
+  wordlist.forEach((word, index) => {
     const span = document.createElement("span");
     span.textContent = word + " ";
     span.style.paddingLeft = "10px";
-
     if (index == currentWord) {
       span.style.backgroundColor = "lightblue";
     } else if (checkWords[word]) {
@@ -96,7 +105,7 @@ async function populateQuoteBox(currentWord, checkWords) {
     quotebox.appendChild(span);
   });
 
-  return words;
+  return wordlist;
 }
 
 function countdownTimer() {
@@ -113,12 +122,11 @@ function countdownTimer() {
   });
 }
 
-
 async function createMasterWordList() {
   // Use fetch to load in the wordlist CSV file
   const response = await fetch("/static/wordlist.csv");
   const data = await response.text();
-  
+
   // Split the CSV data by newline to create an array of words.
   let wordlist = data.split("\n");
 
@@ -126,9 +134,9 @@ async function createMasterWordList() {
   return wordlist.slice(1);
 }
 
-async function createRandomWordList(numberOfWords, maxCharacterCount){
+async function createRandomWordList(numberOfWords, maxCharacterCount) {
   const masterWordlist = await createMasterWordList();
-  
+
   let word_3 = masterWordlist.filter((word) => word.length <= 7);
   let result = word_3.slice(0, 50);
 
