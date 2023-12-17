@@ -13,7 +13,6 @@ async function prepareTest() {
   let testIsInProgress = false;
   let timerId;
   let options = {
-    difficulty: document.getElementById("difficulty").value,
     time: document.getElementById("time").value,
     wordlength: document.getElementById("wordlength").value,
     wordcount: document.getElementById("wordcount").value
