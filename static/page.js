@@ -20,6 +20,7 @@ async function prepareTest() {
     wordlength: document.getElementById("wordlength").value,
     wordcount: document.getElementById("wordcount").value,
   };
+  timer.innerHTML = options.time;
   let wordlist = await createRandomWordList(
     options.wordcount,
     options.wordlength
@@ -32,8 +33,12 @@ async function prepareTest() {
   inputfield.focus();
 
   // Remove event listener from the text box (since prepareTest() will add a new event listener, we need to prevent having duplicate event listener)
-  resetButton.addEventListener("click", () =>
-    inputfield.removeEventListener("keydown", handleKeyPress)
+  resetButton.addEventListener(
+    "click",
+    function handleReset() {
+      inputfield.removeEventListener("keydown", handleKeyPress);
+    },
+    { once: true }
   );
   document
     .getElementById("wordlength")
@@ -53,7 +58,6 @@ async function prepareTest() {
   inputfield.addEventListener("keydown", handleKeyPress);
 
   function handleKeyPress(key) {
-
     // Find which key is being pressed
     let code = key.code;
     let keyCode = key.keyCode;
@@ -94,8 +98,8 @@ async function prepareTest() {
         checkWords[wordlist[currentWord]] = true;
         correctCharacterCount += wordlist[currentWord].length;
         let timeremaining = document.getElementById("timer").innerHTML;
-        let timeelapsed = document.getElementById("time").value - timeremaining
-        let rawcpm = correctCharacterCount / timeelapsed * 60;
+        let timeelapsed = document.getElementById("time").value - timeremaining;
+        let rawcpm = (correctCharacterCount / timeelapsed) * 60;
         rawcpmtext.innerHTML = rawcpm.toFixed(2);
         rawwpmtext.innerHTML = (rawcpm / 5).toFixed(2);
       } else {
@@ -114,6 +118,13 @@ async function prepareTest() {
 
       // Start countdown
       let timerId = countdownTimer();
+      resetButton.addEventListener(
+        "click",
+        () => {
+          stopTest(timerId);
+        },
+        { once: true }
+      );
       console.log("test start");
       return timerId;
     }
@@ -162,7 +173,7 @@ function countdownTimer() {
       timer.innerHTML = differenceSec.toFixed(2);
     } else {
       timer.innerHTML = "0.00";
-      
+
       //https://stackoverflow.com/questions/109086/stop-setinterval-call-in-javascript
       clearInterval(timerId);
     }
@@ -188,7 +199,7 @@ async function createRandomWordList(numberOfWords, maxCharacterCount) {
   let wordListFilterByCharCount = masterWordlist.filter(
     (word) => word.length <= maxCharacterCount
   );
-  
+
   //https://stackoverflow.com/questions/19269545/how-to-get-a-number-of-random-elements-from-an-array
   let shuffledWordList = wordListFilterByCharCount.sort(
     () => 0.5 - Math.random()
