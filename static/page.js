@@ -7,6 +7,13 @@ const resetButton = document.getElementById("resetButton");
 prepareTest();
 
 async function prepareTest() {
+  // Initialize variables for the typing test
+  let currentWord = 0;
+  let checkWords = {};
+  let testIsInProgress = false;
+  let timerId;
+  let wordlist = await createRandomWordList();
+  
   // Empty input text box
   inputfield.value = "";
 
@@ -15,19 +22,12 @@ async function prepareTest() {
     inputfield.removeEventListener("keydown", handleKeyPress);
   });
 
-  // Initialize variables for the typing test
-  let currentWord = 0;
-  let checkWords = {};
-  let testIsInProgress = false;
-  let timerId;
-  let wordlist = await createRandomWordList();
-
   // Populate the quote box with the word list
   populateQuoteBox(wordlist, currentWord, checkWords);
 
   // Add an event listener to handle keypresses
   inputfield.addEventListener("keydown", handleKeyPress);
-
+  
   function handleKeyPress(key) {
     // Find which key is being pressed
     let code = key.code;
@@ -121,7 +121,7 @@ function stopTimer(timerId) {
 }
 
 function countdownTimer() {
-  var countDate = new Date().getTime() + 60000;
+  var countDate = new Date().getTime() + 6000;
   var timerId = setInterval(function () {
     var now = new Date().getTime();
     var differenceMS = countDate - now;
@@ -130,7 +130,10 @@ function countdownTimer() {
     const timer = document.getElementById("timer");
     if (differenceSec > 0) {
       timer.innerHTML = differenceSec.toFixed(2);
-    } else timer.innerHTML = "0.00";
+    } else {
+      timer.innerHTML = "0.00";
+      clearInterval(timerId);
+    }
   });
   return timerId;
 }
