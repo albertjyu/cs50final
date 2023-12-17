@@ -26,6 +26,8 @@ async function prepareTest() {
 
   // Remove event listener from the text box (since prepareTest() will add a new event listener, we need to prevent having duplicate event listener)
   resetButton.addEventListener("click", () => inputfield.removeEventListener("keydown", handleKeyPress));
+  document.getElementById("wordlength").addEventListener("change", () => inputfield.removeEventListener("keydown", handleKeyPress));
+  document.getElementById("wordcount").addEventListener("change", () => inputfield.removeEventListener("keydown", handleKeyPress));
 
   // Populate the quote box with the word list
   populateQuoteBox(wordlist, currentWord, checkWords);
