@@ -3,6 +3,8 @@ const inputfield = document.getElementById("inputfield");
 const quotebox = document.getElementById("quotebox");
 const resetButton = document.getElementById("resetButton");
 const timer = document.getElementById("timer");
+const rawcpmtext = document.getElementById("rawcpm");
+const rawwpmtext = document.getElementById("rawwpm");
 
 // When page loads, prepare the page for a typing test
 prepareTest();
@@ -16,18 +18,33 @@ async function prepareTest() {
   let options = {
     time: document.getElementById("time").value,
     wordlength: document.getElementById("wordlength").value,
-    wordcount: document.getElementById("wordcount").value
-  }
-  let wordlist = await createRandomWordList(options.wordcount, options.wordlength);
-  
+    wordcount: document.getElementById("wordcount").value,
+  };
+  let wordlist = await createRandomWordList(
+    options.wordcount,
+    options.wordlength
+  );
+
+  let correctCharacterCount = 0;
+
   // Empty input text box
   inputfield.value = "";
   inputfield.focus();
 
   // Remove event listener from the text box (since prepareTest() will add a new event listener, we need to prevent having duplicate event listener)
-  resetButton.addEventListener("click", () => inputfield.removeEventListener("keydown", handleKeyPress));
-  document.getElementById("wordlength").addEventListener("change", () => inputfield.removeEventListener("keydown", handleKeyPress));
-  document.getElementById("wordcount").addEventListener("change", () => inputfield.removeEventListener("keydown", handleKeyPress));
+  resetButton.addEventListener("click", () =>
+    inputfield.removeEventListener("keydown", handleKeyPress)
+  );
+  document
+    .getElementById("wordlength")
+    .addEventListener("change", () =>
+      inputfield.removeEventListener("keydown", handleKeyPress)
+    );
+  document
+    .getElementById("wordcount")
+    .addEventListener("change", () =>
+      inputfield.removeEventListener("keydown", handleKeyPress)
+    );
 
   // Populate the quote box with the word list
   populateQuoteBox(wordlist, currentWord, checkWords);
@@ -36,8 +53,7 @@ async function prepareTest() {
   inputfield.addEventListener("keydown", handleKeyPress);
 
   function handleKeyPress(key) {
-    console.log(timer.value)
-    
+
     // Find which key is being pressed
     let code = key.code;
     let keyCode = key.keyCode;
@@ -76,6 +92,12 @@ async function prepareTest() {
       // If the user typed the word correctly with no mispelling and case-sensitive
       if (inputfield.value == wordlist[currentWord]) {
         checkWords[wordlist[currentWord]] = true;
+        correctCharacterCount += wordlist[currentWord].length;
+        let timeremaining = document.getElementById("timer").innerHTML;
+        let timeelapsed = document.getElementById("time").value - timeremaining
+        let rawcpm = correctCharacterCount / timeelapsed * 60;
+        rawcpmtext.innerHTML = rawcpm;
+        rawwpmtext.innerHTML = rawcpm / 5;
       } else {
         checkWords[wordlist[currentWord]] = false;
       }
@@ -128,11 +150,11 @@ function stopTimer(timerId) {
 }
 
 function countdownTimer() {
-  let time = document.getElementById("time").value
-  var countDate = new Date().getTime() + time * 1000;
-  var timerId = setInterval(function () {
-    var now = new Date().getTime();
-    var differenceMS = countDate - now;
+  let timer = document.getElementById("time").value;
+  let countDate = new Date().getTime() + timer * 1000;
+  let timerId = setInterval(function () {
+    let now = new Date().getTime();
+    let differenceMS = countDate - now;
     let differenceSec = differenceMS / 1000;
 
     const timer = document.getElementById("timer");
@@ -161,9 +183,13 @@ async function createMasterWordList() {
 async function createRandomWordList(numberOfWords, maxCharacterCount) {
   const masterWordlist = await createMasterWordList();
 
-  let wordListFilterByCharCount = masterWordlist.filter((word) => word.length <= maxCharacterCount);
-  let shuffledWordList = wordListFilterByCharCount.sort(() => 0.5 - Math.random());
-  
+  let wordListFilterByCharCount = masterWordlist.filter(
+    (word) => word.length <= maxCharacterCount
+  );
+  let shuffledWordList = wordListFilterByCharCount.sort(
+    () => 0.5 - Math.random()
+  );
+
   let wordListSliced = shuffledWordList.slice(0, numberOfWords);
 
   return wordListSliced;
