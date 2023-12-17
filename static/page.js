@@ -162,6 +162,8 @@ function countdownTimer() {
       timer.innerHTML = differenceSec.toFixed(2);
     } else {
       timer.innerHTML = "0.00";
+      
+      //https://stackoverflow.com/questions/109086/stop-setinterval-call-in-javascript
       clearInterval(timerId);
     }
   });
@@ -186,6 +188,8 @@ async function createRandomWordList(numberOfWords, maxCharacterCount) {
   let wordListFilterByCharCount = masterWordlist.filter(
     (word) => word.length <= maxCharacterCount
   );
+  
+  //https://stackoverflow.com/questions/19269545/how-to-get-a-number-of-random-elements-from-an-array
   let shuffledWordList = wordListFilterByCharCount.sort(
     () => 0.5 - Math.random()
   );
