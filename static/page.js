@@ -69,7 +69,6 @@ async function prepareTest() {
 
     if (keyIsAlphanumeric && !testIsInProgress) {
       // If the key is a number or letter and the test hasn't started yet, start the test
-      console.log("alphanumeric");
       timerId = startTest();
     } else if (keyIsSpace && !testIsInProgress) {
       key.preventDefault();
@@ -125,7 +124,6 @@ async function prepareTest() {
         },
         { once: true }
       );
-      console.log("test start");
       return timerId;
     }
 
@@ -137,7 +135,6 @@ async function prepareTest() {
 
 function populateQuoteBox(wordlist, currentWord, checkWords) {
   quotebox.innerHTML = "";
-  console.log(checkWords);
   // Fill the word box with the random words
   wordlist.forEach((word, index) => {
     const span = document.createElement("span");
