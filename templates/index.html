@@ -55,7 +55,7 @@
         <div><p1>Options:</p1></div>
         <div>
           <p1>Difficulty:</p1>
-          <select>
+          <select id="difficulty">
             <option value="easy">Easy</option>
             <option value="medium">Medium</option>
             <option value="hard">Hard</option>
@@ -63,7 +63,7 @@
         </div>
         <div>
           <p1>Time:</p1>
-          <select>
+          <select id="time">
             <option value="60">60 seconds</option>
             <option value="30">30 seconds</option>
             <option value="15">15 seconds</option>
@@ -71,10 +71,19 @@
         </div>
         <div>
           <p1>Max Word Length:</p1>
-          <select>
+          <select id="wordlength">
             <option value="8">8 letters</option>
             <option value="6">6 letters</option>
             <option value="4">4 letters</option>
+          </select>
+        </div>
+        <div>
+          <p1>Word Count:</p1>
+          <select id="wordcount">
+            <option value="10">10 words</option>
+            <option value="15" selected >15 words</option>
+            <option value="25">25 words</option>
+            <option value="50">50 words</option>
           </select>
         </div>
       </div>
