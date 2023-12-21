@@ -76,7 +76,7 @@ async function prepareTest() {
       key.preventDefault();
       timerId = startTest();
       // If the user typed the word correctly with no mispelling and case-sensitive
-      if (inputfield.value == words[currentWord]) {
+      if (inputfield.value == wordlist[currentWord]) {
         checkWords[wordlist[currentWord]] = true;
       } else {
         checkWords[wordlist[currentWord]] = false;
