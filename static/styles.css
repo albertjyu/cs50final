@@ -9,6 +9,10 @@ div {
   font-size: 25px;
 }
 
+#leaderboard-table {
+  width: 100%;
+}
+
 /* https://www.w3schools.com/howto/howto_css_modals.asp */
 .modal {
   display: none;
