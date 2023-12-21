@@ -6,6 +6,27 @@ const timer = document.getElementById("timer");
 const rawcpmtext = document.getElementById("rawcpm");
 const rawwpmtext = document.getElementById("rawwpm");
 
+// Vars for leaderboard modal box
+// https://www.w3schools.com/howto/howto_css_modals.asp
+const leaderboardModal = document.getElementById("leaderboard-dialog");
+const leaderboardOpenButton = document.getElementById("leaderboardOpenButton");
+const leaderboardCloseButton = document.getElementById(
+  "leaderboardCloseButton"
+);
+
+// Add events for buttons to open/close leaderboard box
+// https://www.w3schools.com/howto/howto_css_modals.asp
+leaderboardOpenButton.addEventListener("click", () =>  (leaderboardModal.style.display = "block"));
+leaderboardCloseButton.addEventListener("click", () => (leaderboardModal.style.display = "none"));
+
+// If user clicks outside of leaderboard box, close it
+// https://www.w3schools.com/howto/howto_css_modals.asp
+window.addEventListener("click", function (e) {
+  if (e.target == leaderboardModal) {
+    leaderboardModal.style.display = "none";
+  }
+});
+
 // When page loads, prepare the page for a typing test
 prepareTest();
 
