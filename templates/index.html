@@ -11,6 +11,7 @@
     <div id="container">
       <div>
         <h1>Typing Speed Test</h1>
+        <h5>Type the word and press space to move to the next word. Tab + Enter to reset.</h5>
       </div>
 
       <div style="border: solid">
@@ -54,16 +55,17 @@
           <select id="time">
             <option value="5">5 seconds</option>
             <option value="15">15 seconds</option>
-            <option value="30">30 seconds</option>
+            <option selected value="30">30 seconds</option>
             <option value="60">60 seconds</option>
           </select>
         </div>
         <div>
           <p1>Max Word Length:</p1>
           <select onchange="prepareTest()" id="wordlength">
-            <option value="8">8 letters</option>
-            <option value="6">6 letters</option>
             <option value="4">4 letters</option>
+            <option selected value="5">5 letters</option>
+            <option value="6">6 letters</option>
+            <option value="8">8 letters</option>
           </select>
         </div>
         <div>
@@ -72,7 +74,7 @@
             <option value="5" selected>5 words</option>
             <option value="10">10 words</option>
             <option value="15">15 words</option>
-            <option value="25">25 words</option>
+            <option selected value="25">25 words</option>
             <option value="50">50 words</option>
           </select>
         </div>
