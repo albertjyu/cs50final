@@ -1,12 +1,78 @@
-body {
+.container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 2px;
+  width: 30%;
+  margin: auto;
+}
+
+.title {
   font-family: "Courier New", Courier, monospace;
 }
 
-div {
-  margin-left: auto;
-  margin-right: auto;
-  width: 55%;
-  font-size: 25px;
+.bigbutton {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.plaintext {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 22px;
+}
+
+.textinput {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 22px;
+  flex: 1;
+  width: 0;
+}
+
+.dropdown {
+  appearance: none;
+  height: auto;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 21px;
+  padding: 0 30px 0 10px;
+}
+
+.section-container {
+  border-style: solid;
+  padding: 10px 10px 10px 10px;
+}
+
+.input-container {
+  display: flex;
+  justify-content: space-evenly;
+  border-style: solid;
+  padding: 10px 10px 10px 10px;
+}
+
+.option-container {
+  display: flex;
+}
+
+.dropdown-container {
+  display: flex;
+}
+.dropdown-icon {
+  width: 50px;
+  height: 100%;
+  position: relative;
+  right: 25px;
+  top: 3px;
+  font-size: 19px;
+  user-select: none;
+  pointer-events: none;
+}
+
+#inputcontainer {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+#inputfield {
+  text-align: center;
 }
 
 #leaderboard-table {

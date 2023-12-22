@@ -8,92 +8,115 @@
     <script src="../static/page.js" defer></script>
   </head>
   <body>
-    <div id="container">
+    <div class="container">
       <div>
-        <h1>Typing Speed Test</h1>
-        <h5>
+        <h1 class="title">Typing Speed Test</h1>
+        <h5 class="plaintext">
           Type the word and press space to move to the next word. Tab + Enter to
           reset.
         </h5>
       </div>
 
-      <div style="border: solid">
-        <div id="quotebox" style="text-align: center; width: auto">
+      <div>
+        <span class="plaintext">Time: </span>
+        <span class="plaintext" id="timer"></span>
+        <span class="plaintext">sec</span>
+      </div>
+
+      <div class="section-container">
+        <div
+          class="plaintext"
+          id="quotebox"
+          style="text-align: center; width: auto"
+        >
           Quote Text Box<br /><br />
         </div>
       </div>
 
-      <div>
+      <div class="input-container">
         <input
           id="inputfield"
+          class="textinput"
           autocomplete="off"
           autocorrect="off"
           autocapitalize="off"
           spellcheck="false"
           autofocus
-          placeholder
         />
+        <button class="bigbutton" onclick="prepareTest()" id="resetButton">
+          Reset Test
+        </button>
+      </div>
+
+      <div class="section-container">
+        <div>
+          <p1 class="plaintext">WPM:</p1>
+          <span class="plaintext" id="rawwpm"></span>
+        </div>
+        <div>
+          <p1 class="plaintext">CPM: </p1>
+          <span class="plaintext" id="rawcpm"></span>
+        </div>
+      </div>
+      <div class="section-container">
+        <div class="option-container">
+          <p1 class="plaintext">Time:</p1>
+          <div class="dropdown-container">
+            <select class="dropdown" id="time">
+              <option value="5">5 seconds</option>
+              <option value="15">15 seconds</option>
+              <option selected value="30">30 seconds</option>
+              <option value="60">60 seconds</option>
+            </select>
+            <div class="dropdown-icon">&#9660</div>
+          </div>
+        </div>
+        <div class="option-container">
+          <p1 class="plaintext">Max Word Length:</p1>
+          <div class="dropdown-container">
+            <select class="dropdown" onchange="prepareTest()" id="wordlength">
+              <option value="4">4 letters</option>
+              <option selected value="5">5 letters</option>
+              <option value="6">6 letters</option>
+              <option value="8">8 letters</option>
+            </select>
+            <div class="dropdown-icon">&#9660</div>
+          </div>
+
+        </div>
+        <div class="option-container">
+          <p1 class="plaintext">Word Count:</p1>
+          <div class="dropdown-container">
+            <select class="dropdown" onchange="prepareTest()" id="wordcount">
+              <option value="5" selected>5 words</option>
+              <option value="10">10 words</option>
+              <option value="15">15 words</option>
+              <option selected value="25">25 words</option>
+              <option value="50">50 words</option>
+            </select>
+            <div class="dropdown-icon">&#9660</div>
+          </div>
+
+        </div>
       </div>
       <div>
-        <button onclick="prepareTest()" id="resetButton">Reset Test</button>
-      </div>
-      <div>
-        <span>Time: </span>
-        <span id="timer"></span>
-        <span>sec</span>
-      </div>
-      <div style="border: solid">
-        <div>
-          <p1>WPM:</p1>
-          <span id="rawwpm"></span>
-        </div>
-        <div>
-          <p1>CPM: </p1>
-          <span id="rawcpm"></span>
-        </div>
-      </div>
-      <div style="border: solid">
-        <div>
-          <p1>Time:</p1>
-          <select id="time">
-            <option value="5">5 seconds</option>
-            <option value="15">15 seconds</option>
-            <option selected value="30">30 seconds</option>
-            <option value="60">60 seconds</option>
-          </select>
-        </div>
-        <div>
-          <p1>Max Word Length:</p1>
-          <select onchange="prepareTest()" id="wordlength">
-            <option value="4">4 letters</option>
-            <option selected value="5">5 letters</option>
-            <option value="6">6 letters</option>
-            <option value="8">8 letters</option>
-          </select>
-        </div>
-        <div>
-          <p1>Word Count:</p1>
-          <select onchange="prepareTest()" id="wordcount">
-            <option value="5" selected>5 words</option>
-            <option value="10">10 words</option>
-            <option value="15">15 words</option>
-            <option selected value="25">25 words</option>
-            <option value="50">50 words</option>
-          </select>
-        </div>
-      </div>
-      <div>
-        <button id="leaderboardOpenButton">Leaderboard</button>
+        <button class="bigbutton" id="leaderboardOpenButton">
+          Leaderboard
+        </button>
       </div>
     </div>
 
     <dialog id="leaderboard-dialog" class="modal" open>
       <div class="modal-content">
-        <h3>Add score to leaderboard</h3>
-        <input placeholder="Name" />
-        <button>Add Score</button>
+        <h3 class="plaintext">Add score to leaderboard</h3>
+        <input placeholder="Name" class="textinput" />
+        <button class="bigbutton">Add Score</button>
         <div>
-          <table id="leaderboard-table" style="border-style: solid">
+          <table
+            class="plaintext"
+            id="leaderboard-table"
+            style="border-style: solid"
+          >
             <tr>
               <th>Rank</th>
               <th>Name</th>
@@ -107,13 +130,12 @@
               <th>100.00</th>
               <th>500.00</th>
               <th>12/20/2023</th>
-
             </tr>
           </table>
         </div>
         <br />
         <br />
-        <button id="leaderboardCloseButton">Close</button>
+        <button class="bigbutton" id="leaderboardCloseButton">Close</button>
       </div>
     </dialog>
   </body>
