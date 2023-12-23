@@ -13,7 +13,8 @@ db = SQL("sqlite:///leaderboard.db")
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    leaderboard = db.execute("SELECT * FROM leaderboard ORDER BY CPM DESC")
+    return render_template("index.html", leaderboard=leaderboard)
 
 
 def insertdb():
