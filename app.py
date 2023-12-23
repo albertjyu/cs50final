@@ -14,3 +14,7 @@ db = SQL("sqlite:///leaderboard.db")
 @app.route("/")
 def index():
     return render_template("index.html")
+
+
+def insertdb():
+    db.execute('INSERT INTO leaderboard (name, wpm, cpm) values (?, ?, ?)', name, wpm, cpm)
