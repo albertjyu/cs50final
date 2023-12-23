@@ -29,7 +29,6 @@
           id="quotebox"
           style="text-align: center; width: auto"
         >
-          Quote Text Box<br /><br />
         </div>
       </div>
 
@@ -70,11 +69,11 @@
           <div class="option-container">
             <p1 class="plaintext">Time:</p1>
             <div class="dropdown-container">
-              <select class="dropdown" id="time">
-                <option value="5">5 seconds</option>
-                <option value="15">15 seconds</option>
-                <option selected value="30">30 seconds</option>
-                <option value="60">60 seconds</option>
+              <select class="dropdown" id="time" onchange="prepareTest()">
+                <option value="5.00">5 seconds</option>
+                <option value="15.00">15 seconds</option>
+                <option selected value="30.00">30 seconds</option>
+                <option value="60.00">60 seconds</option>
               </select>
               <div class="dropdown-icon">&#9660</div>
             </div>

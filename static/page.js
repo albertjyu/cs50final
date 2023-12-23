@@ -16,8 +16,14 @@ const leaderboardCloseButton = document.getElementById(
 
 // Add events for buttons to open/close leaderboard box
 // https://www.w3schools.com/howto/howto_css_modals.asp
-leaderboardOpenButton.addEventListener("click", () =>  (leaderboardModal.style.display = "block"));
-leaderboardCloseButton.addEventListener("click", () => (leaderboardModal.style.display = "none"));
+leaderboardOpenButton.addEventListener(
+  "click",
+  () => (leaderboardModal.style.display = "block")
+);
+leaderboardCloseButton.addEventListener(
+  "click",
+  () => (leaderboardModal.style.display = "none")
+);
 
 // If user clicks outside of leaderboard box, close it
 // https://www.w3schools.com/howto/howto_css_modals.asp
@@ -51,9 +57,11 @@ async function prepareTest() {
 
   // Empty input text box
   inputfield.value = "";
-  inputfield.focus();
   rawcpmtext.innerHTML = 0;
   rawwpmtext.innerHTML = 0;
+  inputfield.disabled = false;
+  inputfield.placeholder = "Type here...";
+  inputfield.focus();
 
   // Remove event listener from the text box (since prepareTest() will add a new event listener, we need to prevent having duplicate event listener)
   resetButton.addEventListener(
@@ -99,6 +107,7 @@ async function prepareTest() {
       // If the user typed the word correctly with no mispelling and case-sensitive
       if (inputfield.value == wordlist[currentWord]) {
         checkWords[wordlist[currentWord]] = true;
+        correctCharacterCount += wordlist[currentWord].length;
       } else {
         checkWords[wordlist[currentWord]] = false;
       }
@@ -119,11 +128,6 @@ async function prepareTest() {
       if (inputfield.value == wordlist[currentWord]) {
         checkWords[wordlist[currentWord]] = true;
         correctCharacterCount += wordlist[currentWord].length;
-        let timeremaining = document.getElementById("timer").innerHTML;
-        let timeelapsed = document.getElementById("time").value - timeremaining;
-        let rawcpm = (correctCharacterCount / timeelapsed) * 60;
-        rawcpmtext.innerHTML = rawcpm.toFixed(2);
-        rawwpmtext.innerHTML = (rawcpm / 5).toFixed(2);
       } else {
         checkWords[wordlist[currentWord]] = false;
       }
@@ -140,18 +144,62 @@ async function prepareTest() {
 
       // Start countdown
       let timerId = countdownTimer();
+
+      let updateId = updateStats();
+
+      // Event listener to stop test if reset button is clicked
       resetButton.addEventListener(
         "click",
         () => {
-          stopTest(timerId);
+          stopTest(timerId, updateId);
         },
         { once: true }
       );
+
       return timerId;
     }
 
-    function stopTest(timerId) {
+    function stopTest(timerId, updateId) {
+      clearInterval(updateId);
       stopTimer(timerId);
+      testIsInProgress = false;
+      inputfield.disabled = true;
+      inputfield.placeholder = "Test completed";
+    }
+
+    function countdownTimer() {
+      let timer = document.getElementById("time").value;
+      let countDate = new Date().getTime() + timer * 1000;
+      let timerId = setInterval(function () {
+        let now = new Date().getTime();
+        let differenceMS = countDate - now;
+        let differenceSec = differenceMS / 1000;
+
+        const timer = document.getElementById("timer");
+        if (differenceSec > 0) {
+          timer.innerHTML = differenceSec.toFixed(2);
+        } else {
+          timer.innerHTML = "0.00";
+
+          //https://stackoverflow.com/questions/109086/stop-setinterval-call-in-javascript
+          stopTest(timerId);
+        }
+      });
+      return timerId;
+    }
+
+    function updateStats() {
+      let updateId = setInterval(() => {
+        let timeremaining = document.getElementById("timer").innerHTML;
+        let timeelapsed = document.getElementById("time").value - timeremaining;
+        let rawcpm = (correctCharacterCount / timeelapsed) * 60;
+        rawcpmtext.innerHTML = rawcpm.toFixed(2);
+        rawwpmtext.innerHTML = (rawcpm / 5).toFixed(2);
+        if (timeremaining == 0) {
+          clearInterval(updateId);
+        }
+      }, 200);
+      return updateId;
     }
   }
 }
@@ -178,27 +226,6 @@ function populateQuoteBox(wordlist, currentWord, checkWords) {
 
 function stopTimer(timerId) {
   clearInterval(timerId);
-}
-
-function countdownTimer() {
-  let timer = document.getElementById("time").value;
-  let countDate = new Date().getTime() + timer * 1000;
-  let timerId = setInterval(function () {
-    let now = new Date().getTime();
-    let differenceMS = countDate - now;
-    let differenceSec = differenceMS / 1000;
-
-    const timer = document.getElementById("timer");
-    if (differenceSec > 0) {
-      timer.innerHTML = differenceSec.toFixed(2);
-    } else {
-      timer.innerHTML = "0.00";
-
-      //https://stackoverflow.com/questions/109086/stop-setinterval-call-in-javascript
-      clearInterval(timerId);
-    }
-  });
-  return timerId;
 }
 
 async function createMasterWordList() {
