@@ -5,6 +5,9 @@ const resetButton = document.getElementById("resetButton");
 const timer = document.getElementById("timer");
 const rawcpmtext = document.getElementById("rawcpm");
 const rawwpmtext = document.getElementById("rawwpm");
+const timeOptionDropdown = document.getElementById("time")
+const wordlengthOptionDropdown = document.getElementById("wordlength")
+const wordcountOptionDropdown = document.getElementById("wordcount")
 
 // Vars for leaderboard modal box
 // https://www.w3schools.com/howto/howto_css_modals.asp
@@ -71,13 +74,15 @@ async function prepareTest() {
     },
     { once: true }
   );
-  document
-    .getElementById("wordlength")
+  timeOptionDropdown
     .addEventListener("change", () =>
       inputfield.removeEventListener("keydown", handleKeyPress)
     );
-  document
-    .getElementById("wordcount")
+  wordlengthOptionDropdown
+    .addEventListener("change", () =>
+      inputfield.removeEventListener("keydown", handleKeyPress)
+    );
+  wordcountOptionDropdown
     .addEventListener("change", () =>
       inputfield.removeEventListener("keydown", handleKeyPress)
     );
@@ -119,6 +124,7 @@ async function prepareTest() {
       // If the key is space (i.e. the user completes the current word being typed) then:
       // Prevent the space from being typed into the box
       key.preventDefault();
+      console.log(inputfield.value)
 
       if (currentWord == wordlist.length - 1) {
         stopTest(timerId);
@@ -155,6 +161,21 @@ async function prepareTest() {
         },
         { once: true }
       );
+
+      timeOptionDropdown.addEventListener('change', () => {
+        stopTest(timerId, updateId);
+        prepareTest();
+      }, {once:true})
+      wordcountOptionDropdown.addEventListener('change', () => {
+        stopTest(timerId, updateId);
+        prepareTest();
+      }, {once:true})
+      wordlengthOptionDropdown.addEventListener('change', () => {
+        stopTest(timerId, updateId);
+        prepareTest();
+      }, {once:true})
+
+
 
       return timerId;
     }
