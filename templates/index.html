@@ -50,15 +50,15 @@
 
       <div class="section-container spaced-flexbox">
         
-        <span style="font-weight: bold;" class="plaintext">Stats:</span>
+        <span style="font-weight: bold;" class="plaintext non-selectable">Stats:</span>
 
         <div>
-          <p1 class="plaintext">WPM:</p1>
-          <span class="plaintext" id="rawwpm"></span>
+          <p1 class="plaintext non-selectable">WPM:</p1>
+          <span class="plaintext non-selectable" id="rawwpm"></span>
         </div>
         <div>
-          <p1 class="plaintext">CPM: </p1>
-          <span class="plaintext" id="rawcpm"></span>
+          <p1 class="plaintext non-selectable">CPM: </p1>
+          <span class="plaintext non-selectable" id="rawcpm"></span>
         </div>
       </div>
 
@@ -116,11 +116,18 @@
 
     <dialog id="leaderboard-dialog" class="modal" open>
       <div class="modal-content">
-        <h3 class="plaintext">Add score to leaderboard</h3>
-        <div class="leaderboard-name-input">
-          <input placeholder="Name" class="textinput" />
-          <button class="bigbutton">Add Score</button>
+        <h3 class="plaintext">Leaderboard Top 20</h3>
+        <div id="leaderboard-wpm-container">
+          <span class="plaintext">Score: </span>
+          <span id="leaderboard-wpm" class="plaintext"></span>
+          <span class="plaintext"> WPM</span> <br>
         </div>
+        
+        <form action="/" method="post" id="leaderboard-name-form">
+          <input name="name" id="add-score-input" placeholder="Enter your name" class="textinput"/>
+          <input name="wpm" id="leaderboard-wpm-hidden" style="display:none;">
+          <button type="submit" id="add-score-button" class="bigbutton">Add Score</button>
+        </form>
         <div>        
           <table
             class="plaintext"
@@ -148,6 +155,6 @@
         <br />
         <button class="bigbutton" id="leaderboardCloseButton">Close</button>
       </div>
-    </dialog>
+    </dialog>    
   </body>
 </html>

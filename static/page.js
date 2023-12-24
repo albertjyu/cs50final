@@ -5,9 +5,15 @@ const resetButton = document.getElementById("resetButton");
 const timer = document.getElementById("timer");
 const rawcpmtext = document.getElementById("rawcpm");
 const rawwpmtext = document.getElementById("rawwpm");
-const timeOptionDropdown = document.getElementById("time")
-const wordlengthOptionDropdown = document.getElementById("wordlength")
-const wordcountOptionDropdown = document.getElementById("wordcount")
+const timeOptionDropdown = document.getElementById("time");
+const wordlengthOptionDropdown = document.getElementById("wordlength");
+const wordcountOptionDropdown = document.getElementById("wordcount");
+const leaderboardWpmContainer = document.getElementById('leaderboard-wpm-container');
+const leaderboardNameForm = document.getElementById('leaderboard-name-form');
+const leaderboardWpm = document.getElementById("leaderboard-wpm");
+const leaderboardWpmHidden = document.getElementById("leaderboard-wpm-hidden");
+const addScoreButton = document.getElementById("add-score-button");
+const addScoreInput = document.getElementById("add-score-input");
 
 // Vars for leaderboard modal box
 // https://www.w3schools.com/howto/howto_css_modals.asp
@@ -27,6 +33,7 @@ leaderboardCloseButton.addEventListener(
   "click",
   () => (leaderboardModal.style.display = "none")
 );
+
 
 // If user clicks outside of leaderboard box, close it
 // https://www.w3schools.com/howto/howto_css_modals.asp
@@ -62,10 +69,7 @@ async function prepareTest() {
   inputfield.value = "";
   rawcpmtext.innerHTML = 0;
   rawwpmtext.innerHTML = 0;
-  inputfield.disabled = false;
-  inputfield.placeholder = "Type here...";
-  inputfield.focus();
-
+  
   // Remove event listener from the text box (since prepareTest() will add a new event listener, we need to prevent having duplicate event listener)
   resetButton.addEventListener(
     "click",
@@ -74,24 +78,33 @@ async function prepareTest() {
     },
     { once: true }
   );
-  timeOptionDropdown
-    .addEventListener("change", () =>
-      inputfield.removeEventListener("keydown", handleKeyPress)
-    );
-  wordlengthOptionDropdown
-    .addEventListener("change", () =>
-      inputfield.removeEventListener("keydown", handleKeyPress)
-    );
-  wordcountOptionDropdown
-    .addEventListener("change", () =>
-      inputfield.removeEventListener("keydown", handleKeyPress)
-    );
+  timeOptionDropdown.addEventListener("change", () => {
+    if (testIsInProgress) {
+      inputfield.removeEventListener("keydown", handleKeyPress);
+    }
+  });
+  wordlengthOptionDropdown.addEventListener("change", () => {
+    if (testIsInProgress) {
+      inputfield.removeEventListener("keydown", handleKeyPress);
+    }
+  });
+  wordcountOptionDropdown.addEventListener("change", () => {
+    if (testIsInProgress) {
+      inputfield.removeEventListener("keydown", handleKeyPress);
+    }
+  });
 
   // Populate the quote box with the word list
   populateQuoteBox(wordlist, currentWord, checkWords);
 
   // Add an event listener to handle keypresses
+  console.log("added line 94");
   inputfield.addEventListener("keydown", handleKeyPress);
+
+  // reset inputfield
+  inputfield.disabled = false;
+  inputfield.placeholder = "Type here...";
+  inputfield.focus();
 
   function handleKeyPress(key) {
     // Find which key is being pressed
@@ -109,10 +122,10 @@ async function prepareTest() {
     } else if (keyIsSpace && !testIsInProgress) {
       key.preventDefault();
       timerId = startTest();
-      // If the user typed the word correctly with no mispelling and case-sensitive
+      // If the user typed the word correctly with no mispelling and case-sensitive (space is counted as a character, so +1 to the length of the word typed)
       if (inputfield.value == wordlist[currentWord]) {
         checkWords[wordlist[currentWord]] = true;
-        correctCharacterCount += wordlist[currentWord].length;
+        correctCharacterCount += wordlist[currentWord].length + 1;
       } else {
         checkWords[wordlist[currentWord]] = false;
       }
@@ -124,16 +137,17 @@ async function prepareTest() {
       // If the key is space (i.e. the user completes the current word being typed) then:
       // Prevent the space from being typed into the box
       key.preventDefault();
-      console.log(inputfield.value)
+      console.log(inputfield.value);
 
       if (currentWord == wordlist.length - 1) {
         stopTest(timerId);
+        addToLeaderboard();
       }
 
       // If the user typed the word correctly with no mispelling and case-sensitive
       if (inputfield.value == wordlist[currentWord]) {
         checkWords[wordlist[currentWord]] = true;
-        correctCharacterCount += wordlist[currentWord].length;
+        correctCharacterCount += wordlist[currentWord].length + 1;
       } else {
         checkWords[wordlist[currentWord]] = false;
       }
@@ -162,25 +176,45 @@ async function prepareTest() {
         { once: true }
       );
 
-      timeOptionDropdown.addEventListener('change', () => {
-        stopTest(timerId, updateId);
-        prepareTest();
-      }, {once:true})
-      wordcountOptionDropdown.addEventListener('change', () => {
-        stopTest(timerId, updateId);
-        prepareTest();
-      }, {once:true})
-      wordlengthOptionDropdown.addEventListener('change', () => {
-        stopTest(timerId, updateId);
-        prepareTest();
-      }, {once:true})
-
-
+      timeOptionDropdown.addEventListener(
+        "change",
+        () => {
+          if (testIsInProgress) {
+            stopTest(timerId, updateId);
+            inputfield.removeEventListener("keydown", handleKeyPress);
+          }
+          prepareTest();
+        },
+        { once: true }
+      );
+      wordcountOptionDropdown.addEventListener(
+        "change",
+        () => {
+          if (testIsInProgress) {
+            stopTest(timerId, updateId);
+            inputfield.removeEventListener("keydown", handleKeyPress);
+          }
+          prepareTest();
+        },
+        { once: true }
+      );
+      wordlengthOptionDropdown.addEventListener(
+        "change",
+        () => {
+          if (testIsInProgress) {
+            stopTest(timerId, updateId);
+            inputfield.removeEventListener("keydown", handleKeyPress);
+          }
+          prepareTest();
+        },
+        { once: true }
+      );
 
       return timerId;
     }
 
     function stopTest(timerId, updateId) {
+      inputfield.removeEventListener("keydown", handleKeyPress);
       clearInterval(updateId);
       stopTimer(timerId);
       testIsInProgress = false;
@@ -204,6 +238,8 @@ async function prepareTest() {
 
           //https://stackoverflow.com/questions/109086/stop-setinterval-call-in-javascript
           stopTest(timerId);
+          addToLeaderboard();
+
         }
       });
       return timerId;
@@ -276,4 +312,22 @@ async function createRandomWordList(numberOfWords, maxCharacterCount) {
   let wordListSliced = shuffledWordList.slice(0, numberOfWords);
 
   return wordListSliced;
+}
+
+
+function addToLeaderboard(){
+  addScoreInput.style.display = "block"
+  addScoreButton.style.display = "block"
+  
+  leaderboardWpm.innerHTML = rawwpmtext.innerHTML;
+  leaderboardWpmHidden.value = rawwpmtext.innerHTML;
+  leaderboardNameForm.style.display = "flex";
+  leaderboardModal.style.display = "block";
+  leaderboardWpmContainer.style.display = "block";
+ 
+  // add event listener for the add score button
+  addScoreButton.addEventListener("click", ()=>{
+    addScoreInput.style.display = "none"
+    addScoreButton.style.display = "none"
+    }, {once:true})
 }

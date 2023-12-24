@@ -11,11 +11,16 @@ app = Flask(__name__)
 # Configure database
 db = SQL("sqlite:///leaderboard.db")
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def index():
-    leaderboard = db.execute("SELECT * FROM leaderboard ORDER BY CPM DESC")
-    return render_template("index.html", leaderboard=leaderboard)
-
-
-def insertdb():
-    db.execute('INSERT INTO leaderboard (name, wpm, cpm) values (?, ?, ?)', name, wpm, cpm)
+    if request.method == "POST":
+        name = request.form.get("name")
+        wpm = float(request.form.get("wpm"))
+        cpm = round(wpm * 5, 2)
+        db.execute('INSERT INTO leaderboard (name, wpm, cpm) values (?, ?, ?)', name, wpm, cpm)
+        return redirect("/")
+    
+    else:
+        leaderboard = db.execute("SELECT * FROM leaderboard ORDER BY CPM DESC LIMIT 20")
+        print("test")
+        return render_template("index.html", leaderboard=leaderboard)
