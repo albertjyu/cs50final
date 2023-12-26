@@ -1,9 +1,5 @@
-### app.py template and initialization from Harvard CS50
-import os
-
 from cs50 import SQL
-from flask import Flask, flash, redirect, render_template, request
-from flask_session import Session
+from flask import Flask, redirect, render_template, request
 
 # Configure App
 app = Flask(__name__)

@@ -7,7 +7,7 @@ The test ends when the user completes typing all of the words, or when the timer
 
 There are three user-configurable options that change the behavior of the test: time, maximum word length, and word count. The user may change any of the options to suit their preference.
 
-Technologies:
+#### Technologies:
 1. HTML5
 2. CSS
 3. Javascript
