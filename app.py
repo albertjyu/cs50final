@@ -21,6 +21,6 @@ def index():
         return redirect("/")
     
     else:
-        leaderboard = db.execute("SELECT * FROM leaderboard ORDER BY CPM DESC LIMIT 20")
+        leaderboard = db.execute("SELECT * FROM leaderboard ORDER BY CPM DESC LIMIT 10")
         print("test")
         return render_template("index.html", leaderboard=leaderboard)
