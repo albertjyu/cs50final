@@ -1,4 +1,4 @@
-// Create constants for the input text box and the box the random words will go in
+// Create global constants for page elements
 const inputfield = document.getElementById("inputfield");
 const quotebox = document.getElementById("quotebox");
 const resetButton = document.getElementById("resetButton");
@@ -47,6 +47,7 @@ window.addEventListener("click", function (e) {
 prepareTest();
 
 async function prepareTest() {
+  // This function prepares the page for a typing test by adding event listeners to listen for test start, and handling keystrokes.
   // Initialize variables for the typing test
   let currentWord = 0;
   let checkWords = {};
