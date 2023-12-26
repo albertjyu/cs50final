@@ -1,5 +1,5 @@
 # Typing Speed Test
-#### Video Demo:  <URL HERE>
+#### Video Demo:  <https://www.youtube.com/watch?v=Q0qa2jFLgTA>
 #### Description:
 This web application is an online typing speed test that allows the user to measure their typing speed in words-per-minute and characters-per-minute.
 The Typing Speed Test presents the user with a set of random words to type as fast as they can, and measures the user's typing speed in real time. 
