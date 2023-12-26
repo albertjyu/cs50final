@@ -8,10 +8,15 @@ The test ends when the user completes typing all of the words, or when the timer
 There are three user-configurable options that change the behavior of the test: time, maximum word length, and word count. The user may change any of the options to suit their preference.
 
 Technologies:
-HTML5
-CSS
-Javascript
-Python
-Flask
-sqlite3
+1. HTML5
+2. CSS
+3. Javascript
+4. Python
+5. Flask
+6. sqlite3
+
+The application uses Python and Flask to serve the webpage (index.html). The leaderboard is a local sqlite3 database (leaderboard.db) which contains one table called "leaderboard".  
+The frontend is built upon HTML5 and CSS. This is a single-page application, and all of the page content is contained within index.html and styling in styles.css. All of the logic for the typing test is built on client-side Javascript (page.js).
+
+The words generated for each test are randomly selected from a large list of the most commonly-used words (http://www.wordfrequency.info/). The list was manually scrubbed to remove profanity.
 
